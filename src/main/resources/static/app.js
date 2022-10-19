@@ -1,5 +1,7 @@
 var app = (function () {
 
+    var urlDibujo = 0;
+
     class Point {
         constructor(x, y) {
             this.x = x;
@@ -28,7 +30,7 @@ var app = (function () {
 
     var postAtTopic = function (point) {
         //creando un objeto literal
-        stompClient.send("/topic/newpoint", {}, JSON.stringify(point));
+        stompClient.send(urlDibujo, {}, JSON.stringify(point));
         console.log("Se añadio el punto " + point);
     };
 
@@ -40,7 +42,7 @@ var app = (function () {
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
             //enviando un objeto creado a partir de una clase
-            stompClient.subscribe('/topic/newpoint', function (eventbody) {
+            stompClient.subscribe(urlDibujo, function (eventbody) {
                 var point = JSON.parse(eventbody.body);
                 addPointToCanvas(point);
             });
@@ -49,17 +51,19 @@ var app = (function () {
 
     return {
 
-        init: function () {
+        connect: function (dibujo) {
             var can = document.getElementById("canvas");
             //websocket connection
+            urlDibujo = '/topic/newpoint.' + dibujo;
             connectAndSubscribe();
+            alert("Conectado a dibujo: " + dibujo);
+
             if (window.PointerEvent) {
                 can.addEventListener("pointerdown", function (evt) {
-                    var mousePos = getMousePosition(evt);
-                    var point = new Point(mousePos.x, mousePos.y);
+                    var point = getMousePosition(evt);
                     console.log(point);
                     addPointToCanvas(point);
-                    postAtTopic(point);
+                    postAtTopic(point)
                 });
             }
         },

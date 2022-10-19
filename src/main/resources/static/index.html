@@ -28,10 +28,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 </head>
 
-<body onload="app.init()">
+<body>
     X:<input id="x" type="number" />
     Y:<input id="y" type="number" />
     <button onclick="app.publishPoint($('#x').val(),$('#y').val())">Send point</button>
+    <br></br>
+    <div>
+        Conectar a dibujo:<input id="dibujoid" type="number" />
+        <button onclick="app.connect($('#dibujoid').val())">Connect</button>
+    </div>
+    <br></br>
     <canvas id="canvas" width="800" height="600"></canvas>
 </body>
 
