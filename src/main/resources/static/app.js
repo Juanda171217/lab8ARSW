@@ -46,7 +46,7 @@ var app = (function () {
 
     var postAtTopic = function (point) {
         //creando un objeto literal
-        stompClient.send("/app"+urlDibujo, {}, JSON.stringify(point));
+        stompClient.send("/app" + urlDibujo, {}, JSON.stringify(point));
         console.log("Se añadio el punto " + point);
     };
 
@@ -64,12 +64,11 @@ var app = (function () {
                     var point = JSON.parse(eventbody.body);
                     addPointToCanvas(point);
                 }
-                else{
-
+                else {
                     addPoligonToCanvas(JSON.parse(eventbody.body));
                 }
             });
-        }); 
+        });
     };
 
     return {
@@ -80,7 +79,7 @@ var app = (function () {
             var selecion = document.getElementById("conexion")
             urlDibujo = selecion.value + dibujo;
             connectAndSubscribe();
-            alert("Te conectaste al "+selecion[selecion.selectedIndex].innerHTML+" No" + dibujo);
+            alert("Conectado a " + selecion[selecion.selectedIndex].innerHTML + " N." + dibujo);
             if (urlDibujo.includes("newpoint")) {
                 if (window.PointerEvent) {
                     can.addEventListener("pointerdown", function (evt) {
