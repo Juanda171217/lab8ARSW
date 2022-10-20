@@ -69,7 +69,7 @@ var app = (function () {
                     addPoligonToCanvas(JSON.parse(eventbody.body));
                 }
             });
-        });
+        }); 
     };
 
     return {
@@ -77,17 +77,19 @@ var app = (function () {
         connect: function (dibujo) {
             var can = document.getElementById("canvas");
             //websocket connection
-            urlDibujo = '/newpoint.'+dibujo;
+            var selecion = document.getElementById("conexion")
+            urlDibujo = selecion.value + dibujo;
             connectAndSubscribe();
-            alert("Conectado a dibujo: " + dibujo);
-
-            if (window.PointerEvent) {
-                can.addEventListener("pointerdown", function (evt) {
-                    var point = getMousePosition(evt);
-                    console.log(point);
-                    addPointToCanvas(point);
-                    postAtTopic(point)
-                });
+            alert("Te conectaste al "+selecion[selecion.selectedIndex].innerHTML+" No" + dibujo);
+            if (urlDibujo.includes("newpoint")) {
+                if (window.PointerEvent) {
+                    can.addEventListener("pointerdown", function (evt) {
+                        var point = getMousePosition(evt);
+                        console.log(point);
+                        addPointToCanvas(point);
+                        publicPointAtTopic(point)
+                    });
+                }
             }
         },
 
